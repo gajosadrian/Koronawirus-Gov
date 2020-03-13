@@ -2,12 +2,17 @@
     <div>
         <h-title>Wykaz zarażeń koronawirusem</h-title>
 
-        <div>
+        <div class="mb-2">
             <h5>{{ date_string }}</h5>
             <ul>
-                <li>Liczba przypadków: <span class="font-weight-bold">{{ liczba_przypadkow }}</span></li>
-                <li>Liczba zgonów: <span class="font-weight-bold text-danger">{{ liczba_zgonow }}</span></li>
+                <li>Liczba przypadków: <span class="font-weight-bold bg-secondary text-white px-1">{{ liczba_przypadkow }}</span></li>
+                <li>Liczba chorych: <span class="font-weight-bold bg-warning px-1">{{ liczba_chorych }}</span></li>
+                <li>Liczba zgonów: <span class="font-weight-bold bg-danger text-white px-1">{{ liczba_zgonow }}</span></li>
             </ul>
+            <b-progress :max="liczba_przypadkow" show-value>
+                <b-progress-bar :value="liczba_chorych" variant="warning"></b-progress-bar>
+                <b-progress-bar :value="liczba_zgonow" variant="danger"></b-progress-bar>
+            </b-progress>
         </div>
 
         <div class="mb-1">
@@ -69,6 +74,9 @@ export default {
                 sum += Number(infected['Liczba zgonów'])
             });
             return sum
+        },
+        liczba_chorych() {
+            return this.liczba_przypadkow - this.liczba_zgonow
         },
     },
 }

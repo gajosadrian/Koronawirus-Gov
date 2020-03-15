@@ -7,9 +7,11 @@
             <ul>
                 <li>Liczba przypadków: <span class="font-weight-bold bg-secondary text-white px-1">{{ liczba_przypadkow }}</span></li>
                 <li>Liczba chorych: <span class="font-weight-bold bg-warning px-1">{{ liczba_chorych }}</span></li>
+                <li>Liczba chorych: <span class="font-weight-bold bg-success text-white px-1">{{ liczba_wyzdrowien }}</span></li>
                 <li>Liczba zgonów: <span class="font-weight-bold bg-danger text-white px-1">{{ liczba_zgonow }}</span></li>
             </ul>
             <b-progress :max="liczba_przypadkow" show-value>
+                <b-progress-bar :value="liczba_wyzdrowien" variant="success"></b-progress-bar>
                 <b-progress-bar :value="liczba_chorych" variant="warning"></b-progress-bar>
                 <b-progress-bar :value="liczba_zgonow" variant="danger"></b-progress-bar>
             </b-progress>
@@ -30,7 +32,7 @@
             </b-thead>
             <b-tbody>
                 <template v-for="(infected, key) in data">
-                    <b-tr :key="key">
+                    <b-tr :key="infected['Id']">
                         <td>{{ infected['Województwo'] }}</td>
                         <td>{{ infected['Powiat/Miasto'] }}</td>
                         <td>{{ infected['Liczba'] }}</td>
@@ -54,6 +56,7 @@ export default {
     props: {
         date_string: String,
         data: Array,
+        info: Array,
     },
     data() {
         return {
@@ -62,21 +65,16 @@ export default {
     },
     computed: {
         liczba_przypadkow() {
-            let sum = 0
-            this.data.forEach(infected => {
-                sum += Number(infected['Liczba'])
-            });
-            return sum
+            return this.info['Liczba']
         },
         liczba_zgonow() {
-            let sum = 0
-            this.data.forEach(infected => {
-                sum += Number(infected['Liczba zgonów'])
-            });
-            return sum
+            return this.info['Liczba zgonów']
         },
         liczba_chorych() {
-            return this.liczba_przypadkow - this.liczba_zgonow
+            return this.liczba_przypadkow - this.liczba_zgonow - this.liczba_wyzdrowien
+        },
+        liczba_wyzdrowien() {
+            return 13
         },
     },
 }

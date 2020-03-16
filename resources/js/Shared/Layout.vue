@@ -1,10 +1,12 @@
 <template>
     <div>
         <MainMenu :url="url()" />
-        <b-container :style="$page.agent.is_desktop ? 'margin-top: 65px' : 'margin-bottom: 65px'">
-            <slot />
-        </b-container>
-        <Footer class="mt-5" />
+        <div :style="$page.agent.is_desktop ? 'margin-top: 65px' : 'margin-bottom: 65px'">
+            <b-container>
+                <slot />
+            </b-container>
+            <Footer class="mt-3" />
+        </div>
     </div>
 </template>
 

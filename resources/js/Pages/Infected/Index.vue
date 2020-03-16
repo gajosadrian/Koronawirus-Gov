@@ -56,7 +56,7 @@ export default {
     props: {
         date_string: String,
         data: Array,
-        info: Array,
+        info: Object,
     },
     data() {
         return {

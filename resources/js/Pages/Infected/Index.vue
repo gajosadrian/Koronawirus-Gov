@@ -1,6 +1,8 @@
 <template>
     <div>
-        <h-title>Wykaz zarażeń koronawirusem</h-title>
+        <h-title data_source="gov">
+            Wykaz zarażeń koronawirusem
+        </h-title>
 
         <div class="mb-2">
             <h5>{{ date_string }}</h5>

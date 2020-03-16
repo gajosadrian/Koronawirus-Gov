@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use App\Setting;
 
 class DatabaseSeeder extends Seeder
 {
@@ -10,7 +11,11 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Admin',
             'login' => 'admin',
-            'password' => 'dkg290dlgpa921kd',
+            'password' => 'omcys0wovzy1j9dc',
+        ]);
+        Setting::create([
+            'key' => 'recovered',
+            'val' => 0,
         ]);
     }
 }

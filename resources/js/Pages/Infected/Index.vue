@@ -7,7 +7,7 @@
             <ul>
                 <li>Liczba przypadków: <span class="font-weight-bold bg-secondary text-white px-1">{{ liczba_przypadkow }}</span></li>
                 <li>Liczba chorych: <span class="font-weight-bold bg-warning px-1">{{ liczba_chorych }}</span></li>
-                <li>Liczba chorych: <span class="font-weight-bold bg-success text-white px-1">{{ liczba_wyzdrowien }}</span></li>
+                <li>Liczba wyzdrowień: <span class="font-weight-bold bg-success text-white px-1">{{ liczba_wyzdrowien }}</span></li>
                 <li>Liczba zgonów: <span class="font-weight-bold bg-danger text-white px-1">{{ liczba_zgonow }}</span></li>
             </ul>
             <b-progress :max="liczba_przypadkow" show-value>
@@ -67,6 +67,7 @@ export default {
         data_filtered() {
             return this.data.filter(infected => {
                 return infected['Powiat/Miasto'].toLowerCase().includes(this.search.toLowerCase())
+                    || infected['Województwo'].toLowerCase().includes(this.search.toLowerCase())
             })
         },
 
@@ -80,7 +81,7 @@ export default {
             return this.liczba_przypadkow - this.liczba_zgonow - this.liczba_wyzdrowien
         },
         liczba_wyzdrowien() {
-            return 13
+            return this.info['recovered']
         },
     },
     watch: {

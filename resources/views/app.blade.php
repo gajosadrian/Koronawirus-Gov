@@ -11,6 +11,11 @@
     <link rel="icon" sizes="512x512" type="image/png" href="{{ asset('favicons/android-chrome-512x512.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicons/apple-touch-icon.png') }}">
 
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Koronawirus" />
+    <meta property="og:description" content="Informacje o Koronawirusie" />
+    <meta property="og:image" content="{{ asset('favicons/android-chrome-512x512.png') }}" />
+
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 
     {{-- Inertia --}}

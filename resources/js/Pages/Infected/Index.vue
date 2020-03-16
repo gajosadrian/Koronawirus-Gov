@@ -31,7 +31,7 @@
                 </b-tr>
             </b-thead>
             <b-tbody>
-                <template v-for="(infected, key) in data">
+                <template v-for="(infected, key) in data_filtered">
                     <b-tr :key="infected['Id']">
                         <td>{{ infected['Województwo'] }}</td>
                         <td>{{ infected['Powiat/Miasto'] }}</td>
@@ -64,6 +64,12 @@ export default {
         }
     },
     computed: {
+        data_filtered() {
+            return this.data.filter(infected => {
+                return infected['Powiat/Miasto'].toLowerCase().includes(this.search.toLowerCase())
+            })
+        },
+
         liczba_przypadkow() {
             return this.info['Liczba']
         },
@@ -76,6 +82,16 @@ export default {
         liczba_wyzdrowien() {
             return 13
         },
+    },
+    watch: {
+        search(val) {
+            localStorage.search = val
+        }
+    },
+    mounted() {
+        if (localStorage.search) {
+            this.search = localStorage.search
+        }
     },
 }
 </script>

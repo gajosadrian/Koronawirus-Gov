@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Cache;
 
 class InfectedController extends Controller
 {
@@ -11,8 +12,10 @@ class InfectedController extends Controller
     {
         $date_string = now()->toDateString();
 
-        $page = file_get_contents('https://www.gov.pl/web/koronawirus/wykaz-zarazen-koronawirusem-sars-cov-2');
-        $data = collect(json_decode(json_decode(get_string_between($page, '<pre id="registerData" class="hide">', '</pre>'))->parsedData));
+        $data = Cache::remember('infected_data', 60, function () {
+            $page = file_get_contents('https://www.gov.pl/web/koronawirus/wykaz-zarazen-koronawirusem-sars-cov-2');
+            return collect(json_decode(json_decode(get_string_between($page, '<pre id="registerData" class="hide">', '</pre>'))->parsedData));
+        });
 
         $info = $data->shift();
 

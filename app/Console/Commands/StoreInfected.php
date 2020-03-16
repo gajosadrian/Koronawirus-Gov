@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\InfectedData;
 
 class StoreInfected extends Command
 {
@@ -21,11 +22,27 @@ class StoreInfected extends Command
         $when = $this->argument('when');
 
         if ( ! in_array($when, self::$days)) {
-            $this->error('Use only <today/yestarday>');
+            $this->error('Use only <today/yesterday>');
             return;
         }
 
-        $data = getInfoData();
+        $date = today();
+        switch ($when) {
+            case 'today':
+                break;
+            case 'yesterday':
+                $date->subDay();
+                break;
+        }
+
+        $data = (array) getInfoData();
+        $infected_data = new InfectedData;
+        $infected_data->date = $date;
+        $infected_data->infected = $data['Liczba'];
+        $infected_data->sick = $data['Liczba'] - $data['Liczba zgonów'] - $data['recovered'];
+        $infected_data->recovered = $data['recovered'];
+        $infected_data->dead = $data['Liczba zgonów'];
+        $infected_data->save();
 
         $this->info("Stored data from {$when}!");
     }

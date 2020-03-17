@@ -22,7 +22,7 @@
                                     label="Login"
                                     label-for="login"
                                     label-cols-md="4"
-                                    label-align="right"
+                                    label-align-md="right"
                                 >
                                     <b-form-input v-model="form.login" :state="($page.errors.login ? false : null)" id="login" type="text" required autofocus autocapitalize="off" />
                                     <b-form-invalid-feedback v-if="$page.errors.login" id="login-feedback">
@@ -34,7 +34,7 @@
                                     label="Hasło"
                                     label-for="password"
                                     label-cols-md="4"
-                                    label-align="right"
+                                    label-align-md="right"
                                 >
                                     <b-form-input v-model="form.password" id="password" type="password" required />
                                 </b-form-group>

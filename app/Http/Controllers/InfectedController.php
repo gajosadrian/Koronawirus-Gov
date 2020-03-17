@@ -17,7 +17,7 @@ class InfectedController extends Controller
         $data = getInfectedData();
         $info = getInfoData();
 
-        $infected_database = InfectedData::latest('date')->limit(14)->get();
+        $infected_database = InfectedData::latest('date')->limit(21)->get();
 
         return Inertia::render('Infected/Index', compact('date_string', 'data', 'info', 'infected_database'));
     }

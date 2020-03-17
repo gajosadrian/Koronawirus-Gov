@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h-title data_source="gis">
+        <h-title data_source="gov">
             Wykaz zarażeń koronawirusem
         </h-title>
 
@@ -20,18 +20,26 @@
                     <b-tr>
                         <td style="width:1%">Przypadków:</td>
                         <td><span class="font-weight-bold bg-secondary text-white px-1">{{ infected_n }}</span></td>
+                        <td style="width:1%">Dzisiaj:</td>
+                        <td><span class="font-weight-bold bg-secondary text-white px-1">+{{ new_infected_n }}</span></td>
                     </b-tr>
                     <b-tr>
                         <td>Chorych:</td>
                         <td><span class="font-weight-bold bg-warning px-1">{{ sick_n }}</span></td>
+                        <td></td>
+                        <td></td>
                     </b-tr>
                     <b-tr>
                         <td>Wyzdrowień:</td>
                         <td><span class="font-weight-bold bg-success text-white px-1">{{ recovered_n }}</span></td>
+                        <td></td>
+                        <td></td>
                     </b-tr>
                     <b-tr>
                         <td>Zgonów:</td>
                         <td><span class="font-weight-bold bg-danger text-white px-1">{{ dead_n }}</span></td>
+                        <td></td>
+                        <td></td>
                     </b-tr>
                 </b-tbody>
             </b-table-simple>
@@ -44,10 +52,21 @@
         </div>
 
         <div class="mb-2">
-            <h5 class="mb-0">Wykres aktualnie chorych</h5>
+            <h5 class="mb-0">Wykres liczby chorujących</h5>
             <GChart
                 type="LineChart"
                 :data="chart_data"
+            />
+        </div>
+
+        <div class="mb-2">
+            <h5 class="mb-0">Dzienny przyrost zachorowań</h5>
+            <GChart
+                type="LineChart"
+                :data="chart2_data"
+                :options="{
+                    curveType: 'function',
+                }"
             />
         </div>
 
@@ -55,7 +74,8 @@
             <h5>Tabela zachorowań</h5>
 
             <div class="mb-1">
-                <b-form-input v-model="search" placeholder="Szukaj" />
+                <!-- <b-form-input v-model="search" placeholder="Szukaj" /> -->
+                <b-form-select v-model="search" :options="wojewodztwa_select"></b-form-select>
             </div>
 
             <b-table-simple hover small caption-top responsive>
@@ -101,23 +121,33 @@ export default {
     },
     data() {
         return {
-            search: '',
+            search: null,
         }
     },
     computed: {
         data_filtered() {
             return this.data.filter(infected => {
-                return infected['Województwo'].toLowerCase().includes(this.search.toLowerCase())
+                if ( ! this.search) return true
+                return ('*'+infected['Województwo']+'*').toLowerCase().includes(this.search.toLowerCase())
                     // || infected['Powiat/Miasto'].toLowerCase().includes(this.search.toLowerCase())
             })
         },
 
         chart_data() {
             let array = [ ['Data', 'Chorzy'] ]
-            this.infected_database.reverse().forEach((infected_data) => {
+            this.infected_database.slice().reverse().forEach((infected_data) => {
                 array.push([infected_data.date_shorter, Number(infected_data.sick)])
             })
-            array.push(['Teraz', this.sick_n])
+            array.push(['Dzisiaj', this.sick_n])
+            return array
+        },
+
+        chart2_data() {
+            let array = [ ['Data', 'Przyrost'] ]
+            this.infected_database2.slice().reverse().forEach((infected_data) => {
+                array.push([infected_data.date_shorter, Number(infected_data.infected_increase)])
+            })
+            array.push(['Dzisiaj', this.new_infected_n])
             return array
         },
 
@@ -127,6 +157,22 @@ export default {
                 if ( ! arr[i + 1]) return
                 infected_data.infected_increase = infected_data.infected - arr[i + 1].infected
                 array.push(infected_data)
+            })
+            return array
+        },
+
+        wojewodztwa() {
+            let array = []
+            this.data.forEach((infected) => {
+                array.push(infected['Województwo'])
+            })
+            return array
+        },
+
+        wojewodztwa_select() {
+            let array = [{ value: null, text: 'Wszystkie województwa' }]
+            this.wojewodztwa.forEach((wojewodztwo) => {
+                array.push({ value: '*'+wojewodztwo+'*', text: wojewodztwo })
             })
             return array
         },
@@ -142,6 +188,9 @@ export default {
         },
         recovered_n() {
             return this.info['recovered']
+        },
+        new_infected_n() {
+            return this.infected_n - this.infected_database[0].infected
         },
     },
     watch: {

@@ -63,8 +63,8 @@
                     <b-tr>
                         <b-th>Województwo</b-th>
                         <!-- <b-th>Powiat/Miasto</b-th> -->
-                        <b-th>Liczba przypadków</b-th>
-                        <b-th>Liczba zgonów</b-th>
+                        <b-th>Przypadków</b-th>
+                        <b-th>Zgonów</b-th>
                     </b-tr>
                 </b-thead>
                 <b-tbody>

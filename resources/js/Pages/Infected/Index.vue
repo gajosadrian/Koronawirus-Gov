@@ -62,7 +62,7 @@
                 <b-thead head-variant="light">
                     <b-tr>
                         <b-th>Województwo</b-th>
-                        <b-th>Powiat/Miasto</b-th>
+                        <!-- <b-th>Powiat/Miasto</b-th> -->
                         <b-th>Liczba przypadków</b-th>
                         <b-th>Liczba zgonów</b-th>
                     </b-tr>
@@ -71,7 +71,7 @@
                     <template v-for="(infected, key) in data_filtered">
                         <b-tr :key="infected['Id']">
                             <td>{{ infected['Województwo'] }}</td>
-                            <td>{{ infected['Powiat/Miasto'] }}</td>
+                            <!-- <td>{{ infected['Powiat/Miasto'] }}</td> -->
                             <td>{{ infected['Liczba'] }}</td>
                             <td>{{ infected['Liczba zgonów'] }}</td>
                         </b-tr>
@@ -107,8 +107,8 @@ export default {
     computed: {
         data_filtered() {
             return this.data.filter(infected => {
-                return infected['Powiat/Miasto'].toLowerCase().includes(this.search.toLowerCase())
-                    || infected['Województwo'].toLowerCase().includes(this.search.toLowerCase())
+                return infected['Województwo'].toLowerCase().includes(this.search.toLowerCase())
+                    // || infected['Powiat/Miasto'].toLowerCase().includes(this.search.toLowerCase())
             })
         },
 

@@ -35,6 +35,11 @@ class StoreInfected extends Command
                 break;
         }
 
+        if ( InfectedData::whereDate('date', $date )->first() ) {
+            $this->error('Already added!');
+            return;
+        }
+
         $data = (array) getInfoData();
         $infected_data = new InfectedData;
         $infected_data->date = $date;

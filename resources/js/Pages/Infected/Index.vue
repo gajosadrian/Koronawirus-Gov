@@ -7,6 +7,15 @@
         <div>
             <!-- <h5>{{ date_string }}</h5> -->
 
+            <b-row v-if="is_toast">
+                <b-col cols="8" lg="10">
+                    <h2 class="text-info">Ponad {{ toast_goal }} zarażeń!</h2>
+                </b-col>
+                <b-col cols="4" lg="2">
+                    <b-img src="https://i.ya-webdesign.com/images/champagne-transparent-toast-14.gif" alt="toast" fluid />
+                </b-col>
+            </b-row>
+
             <div class="mb-2">
                 <b-progress :max="infected_n" show-value>
                     <b-progress-bar :value="recovered_n" variant="success"></b-progress-bar>
@@ -194,7 +203,10 @@ export default {
         },
         is_toast() {
             return this.infected_n % 1000 <= 200
-        }
+        },
+        toast_goal() {
+            return Math.floor(this.infected_n / 1000) * 1000
+        },
     },
     watch: {
         search(val) {
@@ -207,10 +219,12 @@ export default {
         }
 
         if (this.is_toast) {
-            this.$confetti.start()
             setTimeout(() => {
-                this.$confetti.stop()
-            }, 1000)
+                this.$confetti.start()
+                setTimeout(() => {
+                    this.$confetti.stop()
+                }, 1000)
+            }, 2000)
         }
     },
 }

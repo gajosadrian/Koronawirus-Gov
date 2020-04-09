@@ -4,7 +4,7 @@ function getInfectedDataRaw()
 {
     return \Illuminate\Support\Facades\Cache::remember('infected_data', 60, function () {
         $page = file_get_contents('https://www.gov.pl/web/koronawirus/wykaz-zarazen-koronawirusem-sars-cov-2');
-        return collect(json_decode(json_decode(get_string_between($page, '<pre id="registerData" class="hide">', '</pre>'))->parsedData));
+        return collect(json_decode(json_decode(html_entity_decode(get_string_between($page, '<pre id="registerData" class="hide">', '</pre>')))->parsedData));
     });
 }
 

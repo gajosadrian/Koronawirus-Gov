@@ -8,12 +8,15 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 
+import VueConfetti from 'vue-confetti'
+
 Vue.config.productionTip = false
 Vue.mixin({ methods: { route: window.route } })
 Vue.use(VueMeta)
 Vue.use(PortalVue)
 Vue.use(InertiaApp)
 Vue.use(BootstrapVue); Vue.use(IconsPlugin); Vue.use(BootstrapVueIcons)
+Vue.use(VueConfetti)
 
 let app = document.getElementById('app')
 

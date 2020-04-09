@@ -88,7 +88,7 @@
                     </b-tr>
                 </b-thead>
                 <b-tbody>
-                    <template v-for="(infected, key) in data_filtered">
+                    <template v-for="infected in data_filtered">
                         <b-tr :key="infected['Id']">
                             <td>{{ infected['Województwo'] }}</td>
                             <!-- <td>{{ infected['Powiat/Miasto'] }}</td> -->
@@ -192,6 +192,9 @@ export default {
         new_infected_n() {
             return this.infected_n - this.infected_database[0].infected
         },
+        is_toast() {
+            return this.infected_n % 1000 <= 200
+        }
     },
     watch: {
         search(val) {
@@ -201,6 +204,13 @@ export default {
     mounted() {
         if (localStorage.search) {
             this.search = localStorage.search
+        }
+
+        if (this.is_toast) {
+            this.$confetti.start()
+            setTimeout(() => {
+                this.$confetti.stop()
+            }, 1000)
         }
     },
 }
